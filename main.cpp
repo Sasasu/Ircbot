@@ -98,7 +98,7 @@ public:
 private:
     static void callback(MiaowBot *bot,std::string str){
         std::regex r(".*?卖个萌.*?");
-        std::sregex_iterator it(str.begin(), str.end(), r);     //end是尾后迭代器，regex_iterator是regex_iterator的string类型的版本
+        std::sregex_iterator it(str.begin(), str.end(), r);
         if(it!=std::sregex_iterator()){
             std::regex rr("#[^: ]*");
             std::sregex_iterator ii(str.begin(),str.end(),rr);
