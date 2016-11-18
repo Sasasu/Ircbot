@@ -113,7 +113,7 @@ private:
 int main() {
     MiaowBot bot("irc.freenode.net", 6667);
     bot.start();
-    bot.setnick("Sasasu");
+    bot.setnick("miaowbot");
     bot.setuser("miaowbot");
     bot.join("#TJPU_LUG");
     bot.join("#archlinux-cn");
