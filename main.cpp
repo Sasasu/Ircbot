@@ -98,11 +98,28 @@ public:
 private:
     static void callback(MiaowBot *bot,std::string str){
         std::regex r(".*?卖个萌.*?");
-        std::sregex_iterator it(str.begin(), str.end(), r);
-        if(it!=std::sregex_iterator()){
-            std::regex rr("#[^: ]*");
-            std::sregex_iterator ii(str.begin(),str.end(),rr);
+        std::sregex_iterator rt(str.begin(), str.end(), r);
+        if(rt!=std::sregex_iterator()){
+            std::regex d("#[^: ]*");
+            std::sregex_iterator ii(str.begin(),str.end(),d);
             bot->send_msg("喵~",ii->str());
+            return;
+        }
+        std::regex rr(".*?qwq.*?");
+        std::sregex_iterator rrt(str.begin(), str.end(), rr);
+        if(rrt!=std::sregex_iterator()){
+            std::regex d("#[^: ]*");
+            std::sregex_iterator ii(str.begin(),str.end(),d);
+            bot->send_msg("pwp",ii->str());
+            return;
+        }
+        std::regex rrr(".*?pwp.*?");
+        std::sregex_iterator rrrt(str.begin(), str.end(), rrr);
+        if(rrrt!=std::sregex_iterator()){
+            std::regex d("#[^: ]*");
+            std::sregex_iterator ii(str.begin(),str.end(),d);
+            bot->send_msg("qwq",ii->str());
+            return;
         }
 
     }
