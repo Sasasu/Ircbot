@@ -185,13 +185,13 @@ private:
 int main() {
     MiaowBot bot("irc.freenode.net", 6667);
     bot.start();
-    bot.setnick("asdasdasd");
+    bot.setnick("miaowbot");
     bot.setuser("miaowbot");
-    //    bot.join("#linuxba");
-    //    bot.join("##Orz");
-    //    bot.join("#archlinux-cn");
-    //    bot.join("##ana");
-    //    bot.join("#avplayer");
+    bot.join("#linuxba");
+    bot.join("##Orz");
+    bot.join("#archlinux-cn");
+    bot.join("##ana");
+    bot.join("#avplayer");
     bot.join("#TJPU_LUG_");
     bot.run();
     return 0;
