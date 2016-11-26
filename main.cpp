@@ -98,78 +98,83 @@ public:
 private:
     static void callback(MiaowBot *bot,std::string str){
         //不会正则就是菜啊.等考完期中再来改
-        std::regex r(".*?卖个萌.*?");
-        std::sregex_iterator rt(str.begin(), str.end(), r);
-        if(rt!=std::sregex_iterator()){
-            std::regex d("#[^: ]*");
-            std::sregex_iterator ii(str.begin(),str.end(),d);
-            bot->send_msg("喵~",ii->str());
-            return;
-        }
-        std::regex qwq(".*?qwq.*?");
-        std::sregex_iterator rqwq(str.begin(), str.end(), qwq);
-        if(rqwq!=std::sregex_iterator()){
-            std::regex d("#[^: ]*");
-            std::sregex_iterator ii(str.begin(),str.end(),d);
-            bot->send_msg("pwp",ii->str());
-            return;
-        }
-        std::regex pwp(".*?pwp.*?");
-        std::sregex_iterator rpwp(str.begin(), str.end(), pwp);
-        if(rpwp!=std::sregex_iterator()){
-            std::regex d("#[^: ]*");
-            std::sregex_iterator ii(str.begin(),str.end(),d);
-            bot->send_msg("qwq",ii->str());
-            return;
-        }
-        std::regex qwp(".*?qwp.*?");
-        std::sregex_iterator rqwp(str.begin(), str.end(), qwp);
-        if(rqwp!=std::sregex_iterator()){
-            std::regex d("#[^: ]*");
-            std::sregex_iterator ii(str.begin(),str.end(),d);
-            bot->send_msg("pwq",ii->str());
-            return;
-        }
-        std::regex pwq(".*?pwq.*?");
-        std::sregex_iterator rpwq(str.begin(), str.end(), pwq);
-        if(rpwq!=std::sregex_iterator()){
-            std::regex d("#[^: ]*");
-            std::sregex_iterator ii(str.begin(),str.end(),d);
-            bot->send_msg("qwp",ii->str());
-            return;
-        }
-
-        std::regex bwb(".*?bwb.*?");
-        std::sregex_iterator rbwb(str.begin(), str.end(), bwb);
-        if(rbwb!=std::sregex_iterator()){
-            std::regex d("#[^: ]*");
-            std::sregex_iterator ii(str.begin(),str.end(),d);
-            bot->send_msg("dwd",ii->str());
-            return;
-        }
-        std::regex dwd(".*?dwd.*?");
-        std::sregex_iterator rdwd(str.begin(), str.end(), dwd);
-        if(rdwd!=std::sregex_iterator()){
-            std::regex d("#[^: ]*");
-            std::sregex_iterator ii(str.begin(),str.end(),d);
-            bot->send_msg("bwb",ii->str());
-            return;
-        }
-        std::regex dwb(".*?dwb.*?");
-        std::sregex_iterator rdwb(str.begin(), str.end(), dwb);
-        if(rdwb!=std::sregex_iterator()){
-            std::regex d("#[^: ]*");
-            std::sregex_iterator ii(str.begin(),str.end(),d);
-            bot->send_msg("bwd",ii->str());
-            return;
-        }
-        std::regex bwd(".*?bwd.*?");
-        std::sregex_iterator rbwd(str.begin(), str.end(), bwd);
-        if(rbwd!=std::sregex_iterator()){
-            std::regex d("#[^: ]*");
-            std::sregex_iterator ii(str.begin(),str.end(),d);
-            bot->send_msg("dwb",ii->str());
-            return;
+        std::regex tmp(".*?PRIVMSG.*?");
+        std::sregex_iterator tmptmp(str.begin(), str.end(), tmp);
+        //^.*?:(.*?)!.*?PRIVMSG #(.*?) :(.*?)$
+        if(tmptmp!=std::sregex_iterator()){
+            std::regex r(".*?卖个萌.*?");
+            std::sregex_iterator rt(str.begin(), str.end(), r);
+            if(rt!=std::sregex_iterator()){
+                std::regex d("#[^: ]*");
+                std::sregex_iterator ii(str.begin(),str.end(),d);
+                ii.operator ++();
+                bot->send_msg(rand()%2==0?"喵~":"你才卖萌,你全家都卖萌",ii->str());
+                return;
+            }
+            std::regex qwq(".*?qwq.*?");
+            std::sregex_iterator rqwq(str.begin(), str.end(), qwq);
+            if(rqwq!=std::sregex_iterator()){
+                std::regex d("#[^: ]*");
+                std::sregex_iterator ii(str.begin(),str.end(),d);
+                bot->send_msg("pwp",ii->str());
+                return;
+            }
+            std::regex pwp(".*?pwp.*?");
+            std::sregex_iterator rpwp(str.begin(), str.end(), pwp);
+            if(rpwp!=std::sregex_iterator()){
+                std::regex d("#[^: ]*");
+                std::sregex_iterator ii(str.begin(),str.end(),d);
+                bot->send_msg("qwq",ii->str());
+                return;
+            }
+            std::regex qwp(".*?qwp.*?");
+            std::sregex_iterator rqwp(str.begin(), str.end(), qwp);
+            if(rqwp!=std::sregex_iterator()){
+                std::regex d("#[^: ]*");
+                std::sregex_iterator ii(str.begin(),str.end(),d);
+                bot->send_msg("pwq",ii->str());
+                return;
+            }
+            std::regex pwq(".*?pwq.*?");
+            std::sregex_iterator rpwq(str.begin(), str.end(), pwq);
+            if(rpwq!=std::sregex_iterator()){
+                std::regex d("#[^: ]*");
+                std::sregex_iterator ii(str.begin(),str.end(),d);
+                bot->send_msg("qwp",ii->str());
+                return;
+            }
+            std::regex bwb(".*?bwb.*?");
+            std::sregex_iterator rbwb(str.begin(), str.end(), bwb);
+            if(rbwb!=std::sregex_iterator()){
+                std::regex d("#[^: ]*");
+                std::sregex_iterator ii(str.begin(),str.end(),d);
+                bot->send_msg("dwd",ii->str());
+                return;
+            }
+            std::regex dwd(".*?dwd.*?");
+            std::sregex_iterator rdwd(str.begin(), str.end(), dwd);
+            if(rdwd!=std::sregex_iterator()){
+                std::regex d("#[^: ]*");
+                std::sregex_iterator ii(str.begin(),str.end(),d);
+                bot->send_msg("bwb",ii->str());
+                return;
+            }
+            std::regex dwb(".*?dwb.*?");
+            std::sregex_iterator rdwb(str.begin(), str.end(), dwb);
+            if(rdwb!=std::sregex_iterator()){
+                std::regex d("#[^: ]*");
+                std::sregex_iterator ii(str.begin(),str.end(),d);
+                bot->send_msg("bwd",ii->str());
+                return;
+            }
+            std::regex bwd(".*?bwd.*?");
+            std::sregex_iterator rbwd(str.begin(), str.end(), bwd);
+            if(rbwd!=std::sregex_iterator()){
+                std::regex d("#[^: ]*");
+                std::sregex_iterator ii(str.begin(),str.end(),d);
+                bot->send_msg("dwb",ii->str());
+                return;
+            }
         }
 
     }
@@ -180,14 +185,14 @@ private:
 int main() {
     MiaowBot bot("irc.freenode.net", 6667);
     bot.start();
-    bot.setnick("miaowbot");
+    bot.setnick("asdasdasd");
     bot.setuser("miaowbot");
-    bot.join("#linuxba");
-    bot.join("##Orz");
-    bot.join("#archlinux-cn");
-    bot.join("##ana");
-    bot.join("#avplayer");
-    bot.join("#TJPU_LUG");
+    //    bot.join("#linuxba");
+    //    bot.join("##Orz");
+    //    bot.join("#archlinux-cn");
+    //    bot.join("##ana");
+    //    bot.join("#avplayer");
+    bot.join("#TJPU_LUG_");
     bot.run();
     return 0;
 }
