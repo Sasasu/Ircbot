@@ -109,7 +109,6 @@ private:
             if(rt!=std::sregex_iterator()){
                 std::regex d("#[^: ]*");
                 std::sregex_iterator ii(str.begin(),str.end(),d);
-                srand(time(NULL));
                 bot->send_msg((rand()%2==0)?"喵~":"你才卖萌,你全家都卖萌",ii->str());
                 return;
             }
@@ -189,11 +188,11 @@ int main() {
     bot.start();
     bot.setnick("miaowbot");
     bot.setuser("miaowbot");
-    //    bot.join("#linuxba");
-    //    bot.join("##Orz");
-    //    bot.join("#archlinux-cn");
-    //    bot.join("##ana");
-    //    bot.join("#avplayer");
+    bot.join("#linuxba");
+    bot.join("##Orz");
+    bot.join("#archlinux-cn");
+    bot.join("##ana");
+    bot.join("#avplayer");
     bot.join("#TJPU_LUG");
     bot.run();
     return 0;
