@@ -161,7 +161,7 @@ int main() {
     bot.join("#avplayer");
     bot.join("#TJPU_LUG");
 #endif
-#ifndef DEBUG
+#ifdef DEBUG
     bot.setnick("miaowbot_test");
     bot.setuser("miaowbot");
     bot.join("#TJPU_LUG_");
