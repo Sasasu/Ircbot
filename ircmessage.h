@@ -9,7 +9,6 @@ public:
     IrcMessage(std::string);
     std::string username = "";
     std::string host = "";
-    std::string ip = "";
     int message_type;
     std::string channle = "";
     std::string text = "";
