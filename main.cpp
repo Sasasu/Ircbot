@@ -107,7 +107,7 @@ private:
         IrcMessage message(str);
         if(message.message_type == IrcMessage::PRIVMSG){
             std::string text = message.text;
-            std::regex r("(卖个萌|[qpbd]w[qpbd])");
+            std::regex r("(卖个萌|[qpbd][wm][qpbd])");
             std::sregex_iterator sregex(text.begin(), text.end(), r);
             if(sregex != std::sregex_iterator())
                 bot->send_msg(switchstr(sregex->str()),message.channle);
