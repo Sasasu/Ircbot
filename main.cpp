@@ -151,7 +151,7 @@ private:
 int main() {
     MiaowBot bot("irc.freenode.net", 6667);
     bot.start();
-#ifdef RELEASR
+#ifdef RELEASE
     bot.setnick("miaowbot");
     bot.setuser("miaowbot");
     bot.join("#linuxba");
