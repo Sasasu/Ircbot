@@ -107,18 +107,40 @@ private:
         IrcMessage message(str);
         if(message.message_type == IrcMessage::PRIVMSG){
             std::string text = message.text;
-            std::regex r("(卖个萌|[qpbd][wm][qpbd])");
+
+#ifdef DEBUG
+            std::cout << "DEBUG " << text << std::endl;
+            for(char a:text){
+                std::cout << "DEBUG " << a << std::endl;
+            }
+
+            std::cout << "DEBUG " << message.channle << std::endl;
+
+#endif
+            // text has a space at the back
+            if(text[text.length()-2] == 'z' && message.channle == "#TJPU_LUG_" && rand()%3==0){
+                bot->send_msg("z",message.channle);
+                return;
+            }
+
+            std::regex r("(卖个萌|[qpbd][wmnu][qpbd])");
             std::sregex_iterator sregex(text.begin(), text.end(), r);
-            if(sregex != std::sregex_iterator())
+            if(sregex != std::sregex_iterator()){
                 bot->send_msg(switchstr(sregex->str()),message.channle);
-            return;
+                return;
+            }
+
         }
     }
 
     static std::string switchstr(std::string str){
-        if(str == "卖个萌")
+        if(str == "卖个萌"){
             return rand()%3==0?"你才卖萌,你全家都卖萌":"喵~";
-        else{
+
+        }else if(str[str.length()-1] == 'z'){
+            return "z";
+
+        }else{
             std::string tmp = str;
             for(unsigned int  i=0;i<tmp.length();i++){
                 if(tmp[i]=='q'){

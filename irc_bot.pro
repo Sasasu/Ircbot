@@ -13,4 +13,4 @@ DISTFILES += \
 HEADERS += \
     ircmessage.h
 
-DEFINES += RELEASE
+DEFINES += RELEASE #DEBUG
