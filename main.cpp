@@ -118,8 +118,12 @@ private:
 
 #endif
             // text has a space at the back
-            // Orz <- do net send 'z'
-            if(text[text.length()-2] == 'z' && text[text.length()-3] != 'r' && message.channle == "#linuxba" && rand()%3==0){
+            if(text[text.length()-2] == 'z'  && message.channle == "#linuxba" && rand()%3==0){
+
+                if(text.length() >=3 && text[text.length() -3] == 'r'){
+                    return; // Orz <- do net send 'z'
+                }
+
                 bot->send_msg("z",message.channle);
                 return;
             }
