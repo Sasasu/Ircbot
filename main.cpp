@@ -1,9 +1,9 @@
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
-#include <regex>
-#include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
+#include <regex>
 #include <string>
 
 #include "ircmessage.h"
@@ -78,93 +78,82 @@ private:
     streambuf buff_;
 };
 
-class MiaowBot{
+class MiaowBot {
 public:
-    MiaowBot(std::string service,int point):bot(service,point){}
-    void join(std::string str){
-        bot.raw_send("JOIN " + str);
-    }
-    void setuser(std::string str){
-        bot.raw_send("USER " + str + " 0 * :miaow");
-    }
-    void setnick(std::string str){
-        bot.raw_send("NICK " + str);
-    }
+    MiaowBot(std::string service, int point) : bot(service, point) {}
+    void join(std::string str) { bot.raw_send("JOIN " + str); }
+    void setuser(std::string str) { bot.raw_send("USER " + str + " 0 * :miaow"); }
+    void setnick(std::string str) { bot.raw_send("NICK " + str); }
     void send_msg(std::string str, std::string to) {
         bot.raw_send("PRIVMSG " + to + " :" + str);
     }
-    void start(){
+    void start() {
         bot.start();
-        bot.async_read(boost::bind(&callback,this,_1));
+        bot.async_read(boost::bind(&callback, this, _1));
     }
-    void run(){
-        bot.run();
-    }
+    void run() { bot.run(); }
 
 private:
-    static void callback(MiaowBot *bot,std::string str){
+    static void callback(MiaowBot *bot, std::string str) {
         //:Sasasu!~li@180.212.140.146 PRIVMSG #TJPU_LUG_ :测试文字
         IrcMessage message(str);
-        if(message.message_type == IrcMessage::PRIVMSG){
+        if (message.message_type == IrcMessage::PRIVMSG) {
             std::string text = message.text;
 
 #ifdef DEBUG
             std::cout << "DEBUG " << text << std::endl;
-            for(char a:text){
+            for (char a : text) {
                 std::cout << "DEBUG " << a << std::endl;
             }
 
             std::cout << "DEBUG " << message.channle << std::endl;
-
 #endif
             // text has a space at the back
-            if(text[text.length()-2] == 'z'  && message.channle == "#linuxba" && rand()%3==0){
+            if (text[text.length() - 2] == 'z' &&
+                    (message.channle == "#linuxba" || message.channle == "#TJPU_LUG") &&
+                    rand() % 3 == 0) {
 
-                if(text.length() >=3 && text[text.length() -3] == 'r'){
+                if (text.length() >= 3 && text[text.length() - 3] == 'r') {
                     return; // Orz <- do net send 'z'
                 }
 
-                bot->send_msg("z",message.channle);
+                bot->send_msg("z", message.channle);
                 return;
             }
 
             std::regex r("(卖个萌|[qpbd][wmnu][qpbd])");
             std::sregex_iterator sregex(text.begin(), text.end(), r);
-            if(sregex != std::sregex_iterator()){
-                bot->send_msg(switchstr(sregex->str()),message.channle);
+            if (sregex != std::sregex_iterator()) {
+                bot->send_msg(switchstr(sregex->str()), message.channle);
                 return;
             }
-
         }
     }
 
-    static std::string switchstr(std::string str){
-        if(str == "卖个萌"){
-            return rand()%3==0?"你才卖萌,你全家都卖萌":"喵~";
+    static std::string switchstr(std::string str) {
+        if (str == "卖个萌") {
+            return rand() % 3 == 0 ? "你才卖萌,你全家都卖萌" : "喵~";
 
-        }else if(str[str.length()-1] == 'z'){
-            return "z";
-
-        }else{
+        } else {
             std::string tmp = str;
-            for(unsigned int  i=0;i<tmp.length();i++){
-                if(tmp[i]=='q'){
-                    tmp[i]='p';
+            for (unsigned int i = 0; i < tmp.length(); i++) {
+                if (tmp[i] == 'q') {
+                    tmp[i] = 'p';
                     continue;
                 }
 
-                if(tmp[i]=='p'){
-                    tmp[i]='q';
+                if (tmp[i] == 'p') {
+                    tmp[i] = 'q';
                     continue;
                 }
 
-                if(tmp[i]=='b'){
-                    tmp[i]='d';
+                if (tmp[i] == 'b') {
+                    tmp[i] = 'd';
                     continue;
                 }
 
-                if(tmp[i]=='d'){
-                    tmp[i]='b';
+                if (tmp[i] == 'd') {
+                    tmp[i] = 'b';
                     continue;
                 }
             }
