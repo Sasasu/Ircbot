@@ -121,7 +121,7 @@ private:
                 return;
             }
 
-            std::regex r("(卖个萌|[qpbd][wmnu][qpbd])");
+            std::regex r("(卖个萌|[qpbd][wm][qpbd])");
             std::sregex_iterator sregex(text.begin(), text.end(), r);
             if (sregex != std::sregex_iterator()) {
                 bot->send_msg(switchstr(sregex->str()), message.channle);
