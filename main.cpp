@@ -123,7 +123,9 @@ private:
 
             std::regex r("(卖个萌|[qpbd][wm][qpbd])");
             std::sregex_iterator sregex(text.begin(), text.end(), r);
-            if (sregex != std::sregex_iterator()) {
+            std::regex dont_r("(http|shadow)");
+            std::sregex_iterator dont_r_s(text.begin(), text.end(), dont_r);
+            if (sregex != std::sregex_iterator() && dont_r_s == std::sregex_iterator()) {
                 bot->send_msg(switchstr(sregex->str()), message.channle);
                 return;
             }
