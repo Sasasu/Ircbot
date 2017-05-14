@@ -3,7 +3,7 @@
 #include <string>
 
 class IrcMessage {
-public:
+  public:
     IrcMessage();
     IrcMessage(std::string);
     std::string username = "";
@@ -13,7 +13,7 @@ public:
     std::string text = "";
     enum MessageType_enum { PRIVMSG, OTHER };
 
-private:
+  private:
     //:Sasasu!~li@180.212.140.146 PRIVMSG #TJPU_LUG_ :测试文字
 };
 

@@ -10,7 +10,7 @@
 
 using namespace boost::asio;
 class IrcBot {
-public:
+  public:
     IrcBot(std::string service, std::string point)
         : addr_(service), point_(point), socket_(ioservice_) {}
     IrcBot(std::string service, int point)
@@ -19,31 +19,31 @@ public:
 
     void async_read(std::function<void(std::string)> callback) {
         async_read_until(
-                    socket_, buff_, "\r\n",
-                    [this, callback](boost::system::error_code ec, size_t size) {
-            if (!ec) {
-                std::istream istream(&buff_);
-                std::string line;
-                std::getline(istream, line);
-                std::cout << "[SERV] " << line << std::endl;
-                if (line.compare(0, 4, "PING") == 0) {
-                    raw_send("PONG" + line.substr(4));
+            socket_, buff_, "\r\n",
+            [this, callback](boost::system::error_code ec, size_t) {
+                if (!ec) {
+                    std::istream istream(&buff_);
+                    std::string line;
+                    std::getline(istream, line);
+                    std::cout << "[SERV] " << line << std::endl;
+                    if (line.compare(0, 4, "PING") == 0) {
+                        raw_send("PONG" + line.substr(4));
+                    } else {
+                        callback(line);
+                    }
+                    async_read(callback);
                 } else {
-                    callback(line);
+                    std::cout << "[ERR] connect close by server" << std::endl;
+                    exit(1);
                 }
-                async_read(callback);
-            } else {
-                std::cout << "[ERR] connect close by server" << std::endl;
-                exit(1);
-            }
-        });
+            });
     }
     void async_write(const char *some, size_t size) {
         boost::asio::async_write(socket_, boost::asio::buffer(some, size),
-                                 [](boost::system::error_code e, size_t s) {
-            std::cout << "[INFO] write " << e.message()
-                      << std::endl;
-        });
+                                 [](boost::system::error_code e, size_t) {
+                                     std::cout << "[INFO] write " << e.message()
+                                               << std::endl;
+                                 });
     }
     void async_write(std::string str) {
         this->async_write(str.c_str(), str.length());
@@ -56,7 +56,7 @@ public:
 
     void run() { ioservice_.run(); }
 
-private:
+  private:
     void connect() {
         ip::tcp::resolver resolver(ioservice_);
         ip::tcp::resolver::query query(addr_, point_);
@@ -73,16 +73,18 @@ private:
     void disconnect() { socket_.close(); }
 
     io_service ioservice_;
-    ip::tcp::socket socket_;
     std::string addr_, point_;
+    ip::tcp::socket socket_;
     streambuf buff_;
 };
-
+using namespace std;
 class MiaowBot {
-public:
+  public:
     MiaowBot(std::string service, int point) : bot(service, point) {}
     void join(std::string str) { bot.raw_send("JOIN " + str); }
-    void setuser(std::string str) { bot.raw_send("USER " + str + " 0 * :miaow"); }
+    void setuser(std::string str) {
+        bot.raw_send("USER " + str + " 0 * :miaow");
+    }
     void setnick(std::string str) { bot.raw_send("NICK " + str); }
     void send_msg(std::string str, std::string to) {
         bot.raw_send("PRIVMSG " + to + " :" + str);
@@ -93,67 +95,96 @@ public:
     }
     void run() { bot.run(); }
 
-private:
+  private:
     static void callback(MiaowBot *bot, std::string str) {
         //:Sasasu!~li@180.212.140.146 PRIVMSG #TJPU_LUG_ :测试文字
         IrcMessage message(str);
         if (message.message_type == IrcMessage::PRIVMSG) {
             std::string text = message.text;
+            if (message.username == "miaowbot")
+                return;
 
-#ifdef DEBUG
-            std::cout << "DEBUG " << text << std::endl;
-            for (char a : text) {
-                std::cout << "DEBUG " << a << std::endl;
-            }
-
-            std::cout << "DEBUG " << message.channle << std::endl;
-#endif
             // text has a space at the back
             if (text[text.length() - 2] == 'z' &&
-                    (message.channle == "#linuxba" || message.channle == "#TJPU_LUG") &&
-                    rand() % 3 == 0) {
+                message.channle == "#linuxba" && rand() % 3 == 0) {
 
                 if (text.length() >= 3 && text[text.length() - 3] == 'r') {
                     return; // Orz <- do net send 'z'
                 }
-
                 bot->send_msg("z", message.channle);
                 return;
             }
 
-            std::regex r("(卖个萌|[qpbd][wm][qpbd])");
+            std::regex r("(卖个萌|賣個萌|[qpbd][wm][qpbd])");
             std::sregex_iterator sregex(text.begin(), text.end(), r);
             std::regex dont_r("(http|shadow)");
             std::sregex_iterator dont_r_s(text.begin(), text.end(), dont_r);
-            if (sregex != std::sregex_iterator() && dont_r_s == std::sregex_iterator()) {
+            if (sregex != std::sregex_iterator() &&
+                dont_r_s == std::sregex_iterator()) {
                 bot->send_msg(switchstr(sregex->str()), message.channle);
                 return;
+            }
+#ifdef DEBUG
+            std::cout << message.text << std::endl;
+            if (message.channle == "#archlinux-cn-bot") {
+#else
+            if (message.channle == "#archlinux-cn-offtopic") {
+#endif
+                static std::map<std::string, int> hualao;
+                hualao[message.username]++;
+                std::cout << "[INFO] increase " << message.username
+                          << std::endl;
+                if (text.substr(0, 7) == "'hualao") {
+                    std::vector<std::pair<std::string, int>> rank(
+                        hualao.begin(), hualao.end());
+                    sort(rank.begin(), rank.end(),
+                         [](std::pair<std::string, int> &a,
+                            std::pair<std::string, int> &b) {
+                             return a.second > b.second;
+                         });
+                    for (size_t i = 0; i < 3 && i < rank.size(); i++) {
+                        bot->send_msg(rank[i].first + "  " +
+                                          std::to_string(rank[i].second),
+                                      message.channle);
+                    }
+                    return;
+                }
+                if (text.substr(0, 6) == "'reset") {
+                    hualao.clear();
+                    bot->send_msg("清空了~", message.channle);
+                    return;
+                }
+                if (text.substr(0, 5) == "'miaostop") {
+                    bot->send_msg("窝滚了~", message.channle);
+                    exit(0);
+                    return;
+                }
             }
         }
     }
 
     static std::string switchstr(std::string str) {
+        using namespace std;
         if (str == "卖个萌") {
             return rand() % 3 == 0 ? "你才卖萌,你全家都卖萌" : "喵~";
 
+        } else if (str == "賣個萌") {
+            return rand() % 3 == 0 ? "你才賣萌,你全家都賣萌" : "喵~";
         } else {
             std::string tmp = str;
-            for (unsigned int i = 0; i < tmp.length(); i++) {
+            for (size_t i = 0; i < tmp.length(); i++) {
                 if (tmp[i] == 'q') {
                     tmp[i] = 'p';
                     continue;
                 }
-
                 if (tmp[i] == 'p') {
                     tmp[i] = 'q';
                     continue;
                 }
-
                 if (tmp[i] == 'b') {
                     tmp[i] = 'd';
                     continue;
                 }
-
                 if (tmp[i] == 'd') {
                     tmp[i] = 'b';
                     continue;
@@ -167,14 +198,14 @@ private:
 };
 
 int main() {
-    MiaowBot bot("irc.freenode.net", 6667);
+    MiaowBot bot("irc.freenode.net", 8001);
     bot.start();
 #ifdef RELEASE
     bot.setnick("miaowbot");
     bot.setuser("miaowbot");
     bot.join("#linuxba");
     bot.join("##Orz");
-    bot.join("#archlinux-cn");
+    bot.join("#archlinux-cn-offtopic");
     bot.join("##ana");
     bot.join("#avplayer");
     bot.join("#TJPU_LUG");
@@ -182,7 +213,7 @@ int main() {
 #ifdef DEBUG
     bot.setnick("miaowbot_test");
     bot.setuser("miaowbot");
-    bot.join("#TJPU_LUG_");
+    bot.join("##Orz");
 #endif
     bot.run();
     return 0;
