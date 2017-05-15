@@ -38,7 +38,6 @@ IrcMessage::IrcMessage(std::string str) {
             this->username = username;
             this->text = text;
         }
-
     } else {
         this->message_type = OTHER;
     }
