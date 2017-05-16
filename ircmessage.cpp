@@ -29,7 +29,7 @@ IrcMessage::IrcMessage(std::string str) {
             }
             std::string username;
             std::string text;
-            for (size_t i = start; i < end; i++) {
+            for (size_t i = start + 1; i < end; i++) {
                 username.push_back(this->text[i]);
             }
             for (size_t i = end; i < this->text.length(); i++) {
