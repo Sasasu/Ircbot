@@ -3,7 +3,7 @@
 #include <boost/asio.hpp>
 #include <iostream>
 class IrcBot {
-  public:
+   public:
     IrcBot(std::string service, std::string point);
     IrcBot(std::string service, int point);
     void start();
@@ -16,7 +16,7 @@ class IrcBot {
 
     void run();
 
-  private:
+   private:
     void connect();
     void disconnect();
 
@@ -26,4 +26,4 @@ class IrcBot {
     boost::asio::streambuf buff_;
 };
 
-#endif // IRCBOT_H
+#endif  // IRCBOT_H

@@ -9,7 +9,7 @@ void MiaowBot::setuser(std::string str) {
 
 void MiaowBot::setnick(std::string str) { bot.raw_send("NICK " + str); }
 
-void MiaowBot::send_msg(std::string str, std::string to){
+void MiaowBot::send_msg(std::string str, std::string to) {
     bot.raw_send("PRIVMSG " + to + " :" + str);
 }
 
@@ -25,23 +25,22 @@ void MiaowBot::callback(MiaowBot *bot, std::string str) {
     IrcMessage message(str);
     if (message.message_type == IrcMessage::PRIVMSG) {
         std::string text = message.text;
-        if (message.username == "miaowbot")
+        if (message.username.find("bot") != std::string::npos)
             return;
 
         // text has a space at the back
         if (text[text.length() - 2] == 'z' &&
             message.channle == "#linuxba" && rand() % 3 == 0) {
-
             if (text.length() >= 3 && text[text.length() - 3] == 'r') {
-                return; // Orz <- do net send 'z'
+                return;  // Orz <- do net send 'z'
             }
             bot->send_msg("z", message.channle);
             return;
         }
 
-        std::regex r("(卖个萌|賣個萌|[qpbd][wm][qpbd])");
+        std::regex r("(卖个萌|賣個萌|^\\s*[qpbd]+[wm]+[qpbd]+)");
         std::sregex_iterator sregex(text.begin(), text.end(), r);
-        std::regex dont_r("(http|shadow)");
+        std::regex dont_r("(http|https)");
         std::sregex_iterator dont_r_s(text.begin(), text.end(), dont_r);
         if (sregex != std::sregex_iterator() &&
             dont_r_s == std::sregex_iterator()) {

@@ -1,13 +1,13 @@
 #ifndef MIAOWBOT_H
 #define MIAOWBOT_H
-#include "ircbot.h"
-#include "ircmessage.h"
 #include <boost/bind.hpp>
 #include <regex>
 #include <string>
+#include "ircbot.h"
+#include "ircmessage.h"
 
 class MiaowBot {
-  public:
+   public:
     MiaowBot(std::string service, int point);
     void join(std::string str);
     void setuser(std::string str);
@@ -16,7 +16,7 @@ class MiaowBot {
     void start();
     void run();
 
-  private:
+   private:
     static void callback(MiaowBot *bot, std::string str);
 
     static std::string switchstr(std::string str);
@@ -24,4 +24,4 @@ class MiaowBot {
     IrcBot bot;
 };
 
-#endif // MIAOWBOT_H
+#endif  // MIAOWBOT_H
