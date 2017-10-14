@@ -80,7 +80,6 @@ void MiaowBot::callback(MiaowBot *bot, std::string str) {
             if (text.substr(0, 5) == "'miaostop") {
                 bot->send_msg("窝滚了~", message.channle);
                 exit(0);
-                return;
             }
         }
     }

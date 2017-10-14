@@ -5,8 +5,8 @@ set (IrcBot_VERSION_MINOR 0)
 
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
-
-find_package(Boost 1.64 REQUIRED COMPONENTS
+add_definitions(-DRELEASE)
+find_package(Boost REQUIRED COMPONENTS
              regex thread system)
 IF (Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIR})

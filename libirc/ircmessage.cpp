@@ -5,7 +5,8 @@
 static const std::set<char> FORMATCONTROL =
     {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09,
      0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
-     0x02, 0x03, 0x1d, 0x1f, 0x16, 0x0f};
+     0x02, 0x03, 0x1d, 0x1f, 0x16, 0x0f,
+     ' '};
 
 IrcMessage::IrcMessage() {}
 
@@ -39,7 +40,7 @@ IrcMessage::IrcMessage(std::string str) {
                     username.push_back(this->text[i]);
                 }
             }
-            for (size_t i = end; i < this->text.length(); i++) {
+            for (size_t i = end + 1; i < this->text.length(); i++) {
                 if (FORMATCONTROL.find(this->text[i]) == FORMATCONTROL.end()) {
                     text.push_back(this->text[i]);
                 }

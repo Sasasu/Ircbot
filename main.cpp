@@ -18,7 +18,7 @@ int main() {
 #ifdef DEBUG
     bot.setnick("miaowbot_test");
     bot.setuser("miaowbot");
-    bot.join("##Orz");
+    bot.join("#TJPU_LUG");
 #endif
     bot.run();
     return 0;
