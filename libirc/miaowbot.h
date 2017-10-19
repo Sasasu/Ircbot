@@ -1,7 +1,7 @@
 #ifndef MIAOWBOT_H
 #define MIAOWBOT_H
 #include <boost/bind.hpp>
-#include <regex>
+#include <boost/regex.hpp>
 #include <string>
 #include "ircbot.h"
 #include "ircmessage.h"
@@ -19,7 +19,7 @@ class MiaowBot {
    private:
     static void callback(MiaowBot *bot, std::string str);
 
-    static std::string switchstr(std::string str);
+    static std::string switchstr(const std::string& str);
 
     IrcBot bot;
 };

@@ -1,5 +1,6 @@
 #ifndef IRCMESSAGE_H
 #define IRCMESSAGE_H
+#include <iostream>
 #include <set>
 #include <string>
 class IrcMessage {
